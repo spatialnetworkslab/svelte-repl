@@ -1,5 +1,6 @@
 <script>
 	import { getContext, onMount } from 'svelte';
+	import SplitPane from '../SplitPane.svelte';
 	import CodeMirror from '../CodeMirror.svelte';
 	import Message from '../Message.svelte';
 
@@ -26,7 +27,6 @@
 	}
 
 	.editor {
-		height: 0;
 		flex: 1 1 auto;
 	}
 
@@ -36,26 +36,38 @@
 		height: auto;
 		/* height: 100%; */
 	}
+
+	section[slot] {
+		overflow: auto;
+	}
+
 </style>
 
 <div class="editor-wrapper">
-	<div class="editor">
-		<CodeMirror
-			bind:this={editor}
-			{errorLoc}
-			on:change={handle_change}
-		/>
-	</div>
+	<SplitPane type="vertical" pos={80}>
+		<div slot="a">
+			<div class="editor">
+				<CodeMirror
+					bind:this={editor}
+					{errorLoc}
+					on:change={handle_change}
+				/>
+			</div>
+		</div>
 
-	<div class="info">
-		{#if $bundle}
-			{#if $bundle.error}
-				<Message kind="error" details={$bundle.error} filename="{$selected.name}.{$selected.type}"/>
-			{:else if $bundle.warnings.length > 0}
-				{#each $bundle.warnings as warning}
-					<Message kind="warning" details={warning} filename="{$selected.name}.{$selected.type}"/>
-				{/each}
-			{/if}
-		{/if}
-	</div>
+		<section slot="b">
+			<div class="info">
+				{#if $bundle}
+					{#if $bundle.error}
+						<Message kind="error" details={$bundle.error} filename="{$selected.name}.{$selected.type}"/>
+					{:else if $bundle.warnings.length > 0}
+						{#each $bundle.warnings as warning}
+							<Message kind="warning" details={warning} filename="{$selected.name}.{$selected.type}"/>
+						{/each}
+					{/if}
+				{/if}
+			</div>
+		</section>
+	</SplitPane>
+
 </div>
