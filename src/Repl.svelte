@@ -19,6 +19,7 @@
 	export let fixedPos = 50;
 	export let injectedJS = '';
 	export let injectedCSS = '';
+	export let preprocess;
 
 	export function toJSON() {
 		// TODO there's a bug here — Svelte hoists this function because
@@ -92,7 +93,8 @@
 	let current_token;
 	async function rebundle() {
 		const token = current_token = {};
-		const result = await bundler.bundle($components);
+		const preprocessed_components = preprocess ? $components.map(preprocess) : $components;
+		const result = await bundler.bundle(preprocessed_components);
 		if (result && token === current_token) bundle.set(result);
 	}
 

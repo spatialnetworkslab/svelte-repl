@@ -20,7 +20,7 @@
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-terser": "^5.0.0",
-    "svelte": "^3.0.0-beta.28"
+    "svelte": "^3.6.4"
   },
   "repository": "https://github.com/sveltejs/svelte-repl",
   "author": "Rich Harris",
